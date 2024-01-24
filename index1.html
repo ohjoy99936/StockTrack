@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Staff Login Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 320px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .card-header {
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+        }
+
+        .card-footer {
+            margin-top: 15px;
+            text-align: right;
+        }
+    </style>
+
+    <!-- 引入 Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+
+    <script>
+        // 初始化 Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuO9AkQqFfVS-U8rgwkdkiS1wthmGOkQU",
+            authDomain: "stocktrack-327a4.firebaseapp.com",
+            projectId: "stocktrack-327a4",
+            storageBucket: "stocktrack-327a4.appspot.com",
+            messagingSenderId: "707185415746",
+            appId: "1:707185415746:web:21ad50fba1434302d5bfdb",
+            measurementId: "G-0H43SEWVBF"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // 处理用户登录
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // 登录成功
+                    const user = userCredential.user;
+                    console.log('Logged in as: ', user.email);
+                    // 在这里可以进行页面重定向等操作
+                })
+                .catch((error) => {
+                    // 登录失败
+                    console.error('Login error: ', error.message);
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Staff Login</h2>
+            </div>
+            <form action="javascript:void(0);" onsubmit="login()">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" name="email" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" name="password" required />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Login" name="login" />
+                </div>
+            </form>
+            <div class="card-footer">
+                <small>&copy; Joy Tech</small>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
