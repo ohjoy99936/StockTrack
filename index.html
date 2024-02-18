@@ -1,130 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <title>Staff Login Page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            width: 320px;
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .card-header {
-            text-align: center;
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .form-control {
-            width: 100%;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: #fff;
-            padding: 15px;
-            font-size: 16px;
-            display: block;
-            width: 100%;
-        }
-
-        .card-footer {
-            margin-top: 15px;
-            text-align: right;
-        }
-    </style>
-
-    <!-- 引入 Firebase JavaScript SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
-
-    <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID",
-            measurementId: "YOUR_MEASUREMENT_ID"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-
-        // 处理用户登录
-        function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // 登录成功
-                    const user = userCredential.user;
-                    console.log('Logged in as: ', user.email);
-                    // 在这里可以进行页面重定向等操作
-                })
-                .catch((error) => {
-                    // 登录失败
-                    console.error('Login error: ', error.message);
-                });
-        }
-    </script>
+  <title>Login Page</title>
+  <!-- 添加 Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.3.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js"></script>
+  <!-- 初始化 Firebase -->
+  <script>
+    var firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </head>
-
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h2>Staff Login</h2>
-            </div>
-            <form action="javascript:void(0);" onsubmit="login()">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" class="form-control" name="email" required />
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" name="password" required />
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Login" name="login" />
-                </div>
-            </form>
-            <div class="card-footer">
-                <small>&copy; Joy Tech</small>
-            </div>
-        </div>
-    </div>
+  <h2>Login Page</h2>
+  <form id="loginForm">
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    // 监听登录表单的提交事件
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+      // 调用 Firebase Authentication 的 signInWithEmailAndPassword 方法
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(function(userCredential) {
+          // 登录成功，重定向到库存页面
+          window.location.href = 'navbar.html';
+        })
+        .catch(function(error) {
+          // 处理登录失败的情况
+          alert('Login failed: ' + error.message);
+        });
+    });
+  </script>
 </body>
-
 </html>
-
