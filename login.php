@@ -1,8 +1,31 @@
+<head>
+    <!-- å¼•ç”¨ Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-database.js"></script>
+
+    <!-- Firebase åˆå§‹åŒ–ä»£ç  -->
+    <script>
+        // åˆå§‹åŒ– Firebase é¡¹ç›®
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuO9AkQqFfVS-U8rgwkdkiS1wthmGOkQU",
+            authDomain: "stocktrack-327a4.firebaseapp.com",
+            projectId: "stocktrack-327a4",
+            storageBucket: "stocktrack-327a4.appspot.com",
+            messagingSenderId: "707185415746",
+            appId: "1:707185415746:web:21ad50fba1434302d5bfdb",
+            measurementId: "G-0H43SEWVBF"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+
+
 <?php
 $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-// ´´½¨Êı¾İ¿âÁ¬½Ó
+// åˆ›å»ºæ•°æ®åº“è¿æ¥
 $con = new mysqli("localhost", "root", "", "stocktrack");
 
 if ($con->connect_error) {
@@ -16,16 +39,16 @@ if ($con->connect_error) {
     if ($stmt_result->num_rows > 0) {
         $data = $stmt_result->fetch_assoc();
 
-        // »ñÈ¡ÓÃ»§µÄroleID
+        // è·å–ç”¨æˆ·çš„roleID
         $roleID = $data['roleID'];
 
-        // Êä³öµ÷ÊÔĞÅÏ¢
+        // è¾“å‡ºè°ƒè¯•ä¿¡æ¯
         echo "Input Email: " . $email . "<br>";
         echo "Input Password: " . $password . "<br>";
         echo "Database Password: " . $data['password'] . "<br>";
 
         if (isset($data['password']) && $data['password'] === $password) {
-            // µÇÂ¼³É¹¦£¬¸ù¾İ½ÇÉ«ÖØ¶¨Ïòµ½ÏàÓ¦µÄÒ³Ãæ
+            // ç™»å½•æˆåŠŸï¼Œæ ¹æ®è§’è‰²é‡å®šå‘åˆ°ç›¸åº”çš„é¡µé¢
             if ($roleID == 3 || $roleID == 4) {
                 // technical officer or head teacher
                 header("Location: myinfor.php");
@@ -42,7 +65,7 @@ if ($con->connect_error) {
         echo "<h2>User not found</h2>";
     }
 
-    // ¹Ø±Õ²éÑ¯Óï¾äºÍÊı¾İ¿âÁ¬½Ó
+    // å…³é—­æŸ¥è¯¢è¯­å¥å’Œæ•°æ®åº“è¿æ¥
     $stmt->close();
     $con->close();
 }
