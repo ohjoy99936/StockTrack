@@ -21,7 +21,8 @@
 </head>
 
 <?php
-if (isset($_POST['login'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // 获取POST请求的数据
     $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
@@ -69,5 +70,7 @@ if (isset($_POST['login'])) {
         $stmt->close();
         $con->close();
     }
+} else {
+    echo "405 Not Allowed";
 }
 ?>
