@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Management System</title>
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-firestore.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuO9AkQqFfVS-U8rgwkdkiS1wthmGOkQU",
+            authDomain: "stocktrack-327a4.firebaseapp.com",
+            projectId: "stocktrack-327a4",
+            storageBucket: "stocktrack-327a4.appspot.com",
+            messagingSenderId: "707185415746",
+            appId: "1:707185415746:web:21ad50fba1434302d5bfdb",
+            measurementId: "G-0H43SEWVBF"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // 添加员工的 JavaScript 函数
+        function addStaff() {
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var role = document.getElementById("role").value;
+            var password = document.getElementById("password").value;
+
+            // 在集合 "staff" 中添加员工信息
+            db.collection("staff").add({
+                name: name,
+                email: email,
+                roleID: role,
+                password: password
+            })
+            .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Add Staff</h1>
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+        <label for="role">Role:</label>
+        <input type="text" id="role" name="role"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="button" onclick="addStaff()">Submit</button>
+    </form>
+</body>
+</html>
