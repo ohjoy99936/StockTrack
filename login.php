@@ -1,3 +1,25 @@
+<head>
+    <!-- 引用 Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-database.js"></script>
+
+    <!-- Firebase 初始化代码 -->
+    <script>
+        // 初始化 Firebase 项目
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuO9AkQqFfVS-U8rgwkdkiS1wthmGOkQU",
+            authDomain: "stocktrack-327a4.firebaseapp.com",
+            projectId: "stocktrack-327a4",
+            storageBucket: "stocktrack-327a4.appspot.com",
+            messagingSenderId: "707185415746",
+            appId: "1:707185415746:web:21ad50fba1434302d5bfdb",
+            measurementId: "G-0H43SEWVBF"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+
 <?php
 if (isset($_POST['login'])) {
     $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
