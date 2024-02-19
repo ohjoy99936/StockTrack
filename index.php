@@ -1,72 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of staff</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <!-- 引用 Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.2/firebase-database.js"></script>
+
+    <!-- Firebase 初始化代码 -->
+    <script>
+        // 初始化 Firebase 项目
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuO9AkQqFfVS-U8rgwkdkiS1wthmGOkQU",
+            authDomain: "stocktrack-327a4.firebaseapp.com",
+            projectId: "stocktrack-327a4",
+            storageBucket: "stocktrack-327a4.appspot.com",
+            messagingSenderId: "707185415746",
+            appId: "1:707185415746:web:21ad50fba1434302d5bfdb",
+            measurementId: "G-0H43SEWVBF"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
-<body>
 
-    <div class="container mt-5">
 
-        <a class="btn btn-primary" href="create.php" role="button"> New staff </a>
-        <br>
+<?php
+$email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
+$password = isset($_POST['password']) ? $_POST['password'] : '';
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>staffID</th>
-                    <th>name</th>
-                    <th>address</th>
-                    <th>dateOfBirth</th>
-                    <th>email</th>
-                    <th>mob</th>
-                    <th>roleID</th>
-                    <th>Password</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $database = "fastfood_management_system";
-                $connection = new mysqli($servername, $username, $password, $database);
+// 创建数据库连接
+$con = new mysqli("localhost", "root", "", "stocktrack");
 
-                $sql = "SELECT * FROM staff";
-                $result = $connection->query($sql);
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+} else {
+    $stmt = $con->prepare("SELECT * FROM staff WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt_result = $stmt->get_result();
 
-                if (!$result) {
-                die("Invalid query: " . $connection->error);
-                }
+    if ($stmt_result->num_rows > 0) {
+        $data = $stmt_result->fetch_assoc();
 
-                while ($row = $result->fetch_assoc()) {
-                echo "
-                <tr>
-                    <td>" . (isset($row['staffID']) ? $row['staffID'] : '') . "</td>
-                    <td>" . (isset($row['name']) ? $row['name'] : '') . "</td>
-                    <td>" . (isset($row['address']) ? $row['address'] : '') . "</td>
-                    <td>" . (isset($row['dateOfBirth']) ? $row['dateOfBirth'] : '') . "</td>
-                    <td>" . (isset($row['email']) ? $row['email'] : '') . "</td>
-                    <td>" . (isset($row['mob']) ? $row['mob'] : '') . "</td>
-                    <td>" . (isset($row['roleID']) ? $row['roleID'] : '') . "</td>
-                    <td>" . (isset($row['Password']) ? $row['Password'] : '') . "</td>
-                    <td>
-                        <a class='btn btn-primary btn-sm' href='edit.php?id=$row[staffID]'>Edit</a>
-                        <a class='btn btn-primary btn-sm' href='delete.php?id=$row[staffID]'>Delete</a>
-                    </td>
-                    <td>
-                       <a class='btn btn-info btn-sm' href='availability.php?staffID=$row[staffID]'>Availability</a>
+        // 获取用户的roleID
+        $roleID = $data['roleID'];
 
-                    </td>
-                </tr>";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
+        // 输出调试信息
+        echo "Input Email: " . $email . "<br>";
+        echo "Input Password: " . $password . "<br>";
+        echo "Database Password: " . $data['password'] . "<br>";
 
+        if (isset($data['password']) && $data['password'] === $password) {
+            // 登录成功，根据角色重定向到相应的页面
+            if ($roleID == 3 || $roleID == 4) {
+                // technical officer or head teacher
+                header("Location: myinfor.php");
+                exit();
+            } else {
+                // Other roles
+                header("Location: navbar.html");
+                exit();
+            }
+        } else {
+            echo "<h2>Ooppps! Invalid email or password</h2>";
+        }
+    } else {
+        echo "<h2>User not found</h2>";
+    }
+
+    // 关闭查询语句和数据库连接
+    $stmt->close();
+    $con->close();
+}
+?>
